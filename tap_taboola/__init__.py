@@ -219,14 +219,13 @@ def sync_campaigns(access_token, account_id):
 
 def verify_account_access(access_token, account_id):
     url = '{}/backstage/api/1.0/token-details/'.format(BASE_URL)
-
     result = request(url, access_token)
-
+    
     token_account_id = result.json().get('account_id')
     if token_account_id != account_id:
-        LOGGER.warn(("The provided `account_id` ({}) doesn't match the "
-                     "`account_id` of the token issued ({})").format(account_id, token_account_id))
-        return token_account_id
+        LOGGER.warn(("Token issued for network account '{}', using specified sub-account '{}'")
+                   .format(token_account_id, account_id))
+        return account_id  # Return original account_id instead of token's account_id
 
     LOGGER.info("Verified account access via token details endpoint.")
     return account_id
@@ -306,7 +305,7 @@ def do_sync(args):
                         schemas.campaign_performance,
                         key_properties=['campaign_id', 'date'])
 
-    config['account_id'] = verify_account_access(access_token, config.get('account_id'))
+    # config['account_id'] = verify_account_access(access_token, config.get('account_id'))
 
     sync_campaigns(access_token, config.get('account_id'))
     sync_campaign_performance(config, state, access_token,
