@@ -230,8 +230,15 @@ def verify_account_access(access_token, account_id):
     LOGGER.info("Verified account access via token details endpoint.")
     return account_id
 
+
+def fetch_sub_accounts(access_token, network_account_id):
+    url = f'{BASE_URL}/backstage/api/1.0/{network_account_id}/advertisers'
+    response = request(url, access_token)
+    return [adv["account_id"] for adv in response.json().get("results", [])]
+
+
 def validate_config(config):
-    required_keys = ['username', 'password', 'account_id',
+    required_keys = ['username', 'password', 'network_account_id',
                      'client_id', 'client_secret', 'start_date']
     missing_keys = []
     null_keys = []
@@ -285,6 +292,33 @@ def load_state(filename):
         raise RuntimeError
 
 
+# def do_sync(args):
+#     LOGGER.info("Starting sync.")
+
+#     config = load_config(args.config)
+#     state = load_state(args.state)
+
+#     access_token = generate_token(
+#         client_id=config.get('client_id'),
+#         client_secret=config.get('client_secret'),
+#         username=config.get('username'),
+#         password=config.get('password'))
+
+#     singer.write_schema('campaigns',
+#                         schemas.campaign,
+#                         key_properties=['id'])
+
+#     singer.write_schema('campaign_performance',
+#                         schemas.campaign_performance,
+#                         key_properties=['campaign_id', 'date'])
+
+#     # config['account_id'] = verify_account_access(access_token, config.get('account_id'))
+
+#     sync_campaigns(access_token, config.get('account_id'))
+#     sync_campaign_performance(config, state, access_token,
+#                               config.get('account_id'))
+    
+
 def do_sync(args):
     LOGGER.info("Starting sync.")
 
@@ -297,19 +331,21 @@ def do_sync(args):
         username=config.get('username'),
         password=config.get('password'))
 
-    singer.write_schema('campaigns',
-                        schemas.campaign,
-                        key_properties=['id'])
+    # Fetch all sub-account IDs under the network
+    network_account_id = config.get('network_account_id')
+    sub_accounts = fetch_sub_accounts(access_token, network_account_id)
 
-    singer.write_schema('campaign_performance',
-                        schemas.campaign_performance,
+    # Write schemas once
+    singer.write_schema('campaigns', schemas.campaign, key_properties=['id'])
+    singer.write_schema('campaign_performance', schemas.campaign_performance,
                         key_properties=['campaign_id', 'date'])
 
-    # config['account_id'] = verify_account_access(access_token, config.get('account_id'))
+    # Sync each sub-account
+    for account_id in sub_accounts:
+        LOGGER.info(f"Syncing account: {account_id}")
+        sync_campaigns(access_token, account_id)
+        sync_campaign_performance(config, state, access_token, account_id)
 
-    sync_campaigns(access_token, config.get('account_id'))
-    sync_campaign_performance(config, state, access_token,
-                              config.get('account_id'))
 
 def main_impl():
     parser = argparse.ArgumentParser()
