@@ -231,14 +231,24 @@ def verify_account_access(access_token, account_id):
     return account_id
 
 
-def fetch_sub_accounts(access_token, network_account_id):
-    url = f'{BASE_URL}/backstage/api/1.0/{network_account_id}/advertisers'
-    response = request(url, access_token)
-    return [adv["account_id"] for adv in response.json().get("results", [])]
+def fetch_sub_accounts(access_token, account_id):
+    url = f'{BASE_URL}/backstage/api/1.0/{account_id}/advertisers'
+    try:
+        response = request(url, access_token)
+        sub_accounts = [adv["account_id"] for adv in response.json().get("results", [])]
+        # If no sub-accounts, treat the input account_id as the only account
+        return sub_accounts if sub_accounts else [account_id]
+    except requests.exceptions.HTTPError as e:
+        if e.response.status_code == 404:
+            # If it's a non-network account, sync the input account
+            LOGGER.info(f"Account {account_id} is not a network account, syncing directly")
+            return [account_id]
+        else:
+            raise
 
 
 def validate_config(config):
-    required_keys = ['username', 'password', 'network_account_id',
+    required_keys = ['username', 'password', 'account_id',
                      'client_id', 'client_secret', 'start_date']
     missing_keys = []
     null_keys = []
@@ -332,8 +342,8 @@ def do_sync(args):
         password=config.get('password'))
 
     # Fetch all sub-account IDs under the network
-    network_account_id = config.get('network_account_id')
-    sub_accounts = fetch_sub_accounts(access_token, network_account_id)
+    account_id = config.get('account_id')
+    sub_accounts = fetch_sub_accounts(access_token, account_id)
 
     # Write schemas once
     singer.write_schema('campaigns', schemas.campaign, key_properties=['id'])
