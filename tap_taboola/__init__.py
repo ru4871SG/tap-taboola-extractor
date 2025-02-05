@@ -137,14 +137,13 @@ def parse_campaign_performance(campaign_performance):
         'campaign_name': str(campaign_performance.get('campaign_name', '')),
         'conversions_value': float(campaign_performance.get('conversions_value') or 0.0),
     }
-
 def fetch_campaign_performance(config, state, access_token, account_id):
-    url = ('{}/backstage/api/1.0/{}/reports/campaign-summary/dimensions/campaign_day_breakdown' #pylint: disable=line-too-long
+    url = ('{}/backstage/api/1.0/{}/reports/campaign-summary/dimensions/campaign_day_breakdown'
            .format(BASE_URL, account_id))
 
     params = {
         'start_date': state.get('start_date', config.get('start_date')),
-        'end_date': datetime.date.today(),
+        'end_date': config.get('end_date', datetime.date.today()),
     }
 
     campaign_performance = request(url, access_token, params)
