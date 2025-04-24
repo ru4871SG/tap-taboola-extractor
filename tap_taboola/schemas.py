@@ -120,6 +120,10 @@ campaign_performance = {
         'campaign_id': {
             'type': 'integer',
         },
+        'advertiser_id': {
+        'type': 'string',
+        'description': 'Taboola advertiser (sub-account) ID',
+        },
         'date': {
             'type': 'string',
             'format': 'date',

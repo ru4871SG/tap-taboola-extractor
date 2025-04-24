@@ -161,6 +161,7 @@ def sync_campaign_performance(config, state, access_token, account_id):
 
     for record in performance:
         parsed_performance = parse_campaign_performance(record)
+        parsed_performance['advertiser_id'] = str(account_id)
 
         singer.write_record('campaign_performance',
                             parsed_performance,
@@ -347,7 +348,7 @@ def do_sync(args):
     # Write schemas once
     singer.write_schema('campaigns', schemas.campaign, key_properties=['id'])
     singer.write_schema('campaign_performance', schemas.campaign_performance,
-                        key_properties=['campaign_id', 'date'])
+                       key_properties=['advertiser_id','campaign_id','date'])
 
     # Sync each sub-account
     for account_id in sub_accounts:
