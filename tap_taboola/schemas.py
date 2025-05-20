@@ -34,57 +34,45 @@ campaign = {
             'type': 'string',
             'description': 'i.e. "MONTHLY"',
         },
-
         'country_targeting': {
             'type': ['object', 'null'],
-            'description': ('Country codes to target. Type is like "INCLUDE", '
-                            'value is like ["AU", "GB"]'),
+            'description': (
+                'Country codes to target. '
+                'Type is like "INCLUDE", value is like ["AU","GB"]'
+            ),
             'properties': {
-                'type': {
-                    'type': 'string',
-                },
+                'type': {'type': 'string'},
                 'value': {
                     'type': 'array',
-                    'items': {
-                        'type': 'string',
-                    }
+                    'items': {'type': 'string'}
                 }
             }
         },
-
         'platform_targeting': {
             'type': ['object', 'null'],
-            'description': ('Platforms to target. Type is like "INCLUDE", '
-                            'value is like ["TBLT","PHON"].'),
+            'description': (
+                'Platforms to target. '
+                'Type is like "INCLUDE", value is like ["TBLT","PHON"]'
+            ),
             'properties': {
-                'type': {
-                    'type': 'string',
-                },
+                'type': {'type': 'string'},
                 'value': {
                     'type': 'array',
-                    'items': {
-                        'type': 'string',
-                    }
+                    'items': {'type': 'string'}
                 }
             }
         },
-
         'publisher_targeting': {
             'type': ['object', 'null'],
-            'description': ('Publishers to target.'),
+            'description': 'Publishers to target.',
             'properties': {
-                'type': {
-                    'type': 'string',
-                },
+                'type': {'type': 'string'},
                 'value': {
                     'type': 'array',
-                    'items': {
-                        'type': 'string',
-                    }
+                    'items': {'type': 'string'}
                 }
             }
         },
-
         'start_date': {
             'type': 'string',
             'format': 'date',
@@ -97,7 +85,7 @@ campaign = {
         },
         'approval_state': {
             'type': 'string',
-            'description': 'Approval state for the campign, i.e. "APPROVED".'
+            'description': 'Approval state for the campaign, i.e. "APPROVED".'
         },
         'is_active': {
             'type': 'boolean',
@@ -105,7 +93,7 @@ campaign = {
         },
         'spent': {
             'type': 'number',
-            'description': 'i.e. 2.23',
+            'description': 'Total amount spent by this campaign.',
         },
         'status': {
             'type': 'string',
@@ -117,66 +105,22 @@ campaign = {
 campaign_performance = {
     'type': 'object',
     'properties': {
-        'campaign_id': {
-            'type': 'integer',
+        'network_id': {
+            'type': 'string',
+            'description': 'Taboola network (parent) account ID',
         },
-        'advertiser_id': {
-        'type': 'string',
-        'description': 'Taboola advertiser (sub-account) ID',
+        'account_id': {
+            'type': 'string',
+            'description': 'Taboola advertiser (sub-account) ID',
         },
         'date': {
             'type': 'string',
             'format': 'date',
-            'description': 'The start date for this campaign.',
+            'description': 'The date for this summary record.',
         },
-        'impressions': {
-            'type': 'integer',
-            'description': 'Total number of impressions',
-        },
-        'campaign_name': {
-            'type': ['string', 'null'],
-            'description': 'Human-readable campaign name',
-        },
-        'ctr': {
+        'spend': {
             'type': 'number',
-            'description': 'CTR, calculated as clicks/impressions',
+            'description': 'Total spend on that date for this account.',
         },
-        'clicks': {
-            'type': 'integer',
-            'description': 'Total number of clicks',
-        },
-        'cpc': {
-            'type': 'number',
-            'description': 'CPC, calculated as spend/clicks',
-        },
-        'cpm': {
-            'type': 'number',
-            'description': ('CPM (cost per 1000 impressions), calculated '
-                            'as spend/impressions'),
-        },
-        'cpa_conversion_rate': {
-            'type': 'number',
-            'description': 'Conversion rate calculated as actions/clicks',
-        },
-        'cpa_actions_num': {
-            'type': 'integer',
-            'description': 'Total actions (a.k.a. conversions)',
-        },
-        'cpa': {
-            'type': 'number',
-            'description': 'CPA, calculated as spend/actions',
-        },
-        'spent': {
-            'type': 'number',
-            'description': 'Total spent amount',
-        },
-        'conversions_value': {
-            'type': ['number', 'null'],
-            'description': 'Total revenue from conversions',
-        },
-        'currency': {
-            'type': 'string',
-            'description': 'ISO4217 currency code for columns of type money',
-        }
     }
 }
