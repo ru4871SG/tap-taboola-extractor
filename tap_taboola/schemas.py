@@ -122,5 +122,89 @@ campaign_performance = {
             'type': 'number',
             'description': 'Total spend on that date for this account.',
         },
+        'clicks': {
+            'type': 'integer',
+            'description': 'Number of clicks on that date.',
+        },
+        'impressions': {
+            'type': 'integer',
+            'description': 'Number of impressions on that date.',
+        },
+        'conversions_value': {
+            'type': 'number',
+            'description': 'Total value of conversions.',
+        },
+        'roas': {
+            'type': 'number',
+            'description': 'Return on ad spend.',
+        },
+        'roas_clicks': {
+            'type': 'number',
+            'description': 'ROAS based on clicks.',
+        },
+        'roas_views': {
+            'type': 'number',
+            'description': 'ROAS based on views.',
+        },
+        'ctr': {
+            'type': 'number',
+            'description': 'Click-through rate.',
+        },
+        'vctr': {
+            'type': 'number',
+            'description': 'View-through click rate.',
+        },
+        'cpm': {
+            'type': 'number',
+            'description': 'Cost per thousand impressions.',
+        },
+        'vcpm': {
+            'type': 'number',
+            'description': 'View CPM.',
+        },
+        'cpc': {
+            'type': 'number',
+            'description': 'Cost per click.',
+        },
+        'cpa': {
+            'type': 'number',
+            'description': 'Cost per acquisition.',
+        },
+        'cpa_clicks': {
+            'type': 'number',
+            'description': 'Cost per acquisition based on clicks.',
+        },
+        'cpa_views': {
+            'type': 'number',
+            'description': 'Cost per acquisition based on views.',
+        },
+        'cpa_actions_num': {
+            'type': 'integer',
+            'description': 'Number of conversion actions.',
+        },
+        'cpa_actions_num_from_clicks': {
+            'type': 'integer',
+            'description': 'Conversion actions from clicks.',
+        },
+        'cpa_actions_num_from_views': {
+            'type': 'integer',
+            'description': 'Conversion actions from views.',
+        },
+        'cpa_conversion_rate': {
+            'type': 'number',
+            'description': 'Conversion rate.',
+        },
+        'cpa_conversion_rate_clicks': {
+            'type': 'number',
+            'description': 'Conversion rate based on clicks.',
+        },
+        'cpa_conversion_rate_views': {
+            'type': 'number',
+            'description': 'Conversion rate based on views.',
+        },
+        'currency': {
+            'type': 'string',
+            'description': 'Currency code, e.g. "USD".',
+        },
     }
 }

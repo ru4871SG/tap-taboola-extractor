@@ -175,11 +175,30 @@ def parse_campaign_performance(campaign_performance):
     raw_date = campaign_performance.get('date', '')
     date = raw_date.split()[0] if ' ' in raw_date else raw_date
 
-    spend = float(campaign_performance.get('spent', 0.0))
-
     return {
-        'date':  date,
-        'spend': spend
+        'date': date,
+        'spend': float(campaign_performance.get('spent', 0.0)),
+        'clicks': int(campaign_performance.get('clicks', 0)),
+        'impressions': int(campaign_performance.get('impressions', 0)),
+        'conversions_value': float(campaign_performance.get('conversions_value', 0.0)),
+        'roas': float(campaign_performance.get('roas', 0.0)),
+        'roas_clicks': float(campaign_performance.get('roas_clicks', 0.0)),
+        'roas_views': float(campaign_performance.get('roas_views', 0.0)),
+        'ctr': float(campaign_performance.get('ctr', 0.0)),
+        'vctr': float(campaign_performance.get('vctr', 0.0)),
+        'cpm': float(campaign_performance.get('cpm', 0.0)),
+        'vcpm': float(campaign_performance.get('vcpm', 0.0)),
+        'cpc': float(campaign_performance.get('cpc', 0.0)),
+        'cpa': float(campaign_performance.get('cpa', 0.0)),
+        'cpa_clicks': float(campaign_performance.get('cpa_clicks', 0.0)),
+        'cpa_views': float(campaign_performance.get('cpa_views', 0.0)),
+        'cpa_actions_num': int(campaign_performance.get('cpa_actions_num', 0)),
+        'cpa_actions_num_from_clicks': int(campaign_performance.get('cpa_actions_num_from_clicks', 0)),
+        'cpa_actions_num_from_views': int(campaign_performance.get('cpa_actions_num_from_views', 0)),
+        'cpa_conversion_rate': float(campaign_performance.get('cpa_conversion_rate', 0.0)),
+        'cpa_conversion_rate_clicks': float(campaign_performance.get('cpa_conversion_rate_clicks', 0.0)),
+        'cpa_conversion_rate_views': float(campaign_performance.get('cpa_conversion_rate_views', 0.0)),
+        'currency': campaign_performance.get('currency', '')
     }
 
 def fetch_campaign_performance(config, state, access_token, account_id):
