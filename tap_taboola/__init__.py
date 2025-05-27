@@ -430,16 +430,13 @@ def do_sync(args):
     # For each credential pair…
     for creds in config['credentials']:
         token = load_taboola_token(creds['client_id'], creds['client_secret'])
-        network_id = get_network_id(token)
-        try:
-            # For network credentials, list the child advertisers
+        if 'adv_level_cred_account_ids' in creds:
+            network_id   = creds['adv_level_cred_network_id']
+            sub_accounts = creds['adv_level_cred_account_ids']
+        else:
+            # The original network_id fetching mechanism
+            network_id   = get_network_id(token)
             sub_accounts = get_account_ids(network_id, token)
-        except requests.HTTPError as e:
-            if e.response.status_code == 404:
-                # for advertiser levels, use its own account_id
-                sub_accounts = [network_id]
-            else:
-                raise
 
         # …sync _each_ sub-account under that network
         for account_id in sub_accounts:
